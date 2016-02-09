@@ -1,0 +1,214 @@
+1. Validation to Call the service on 'run time' only when all mandatory fields/text box have value
+--------------------------------------------------------------------------------------------
+Ex: Service will be called on 'run time' only when all 3 input box have values
+Solution is to call method using ng-change with ng-modal-option 'blur' on every input box
+
+Other sol:
+---------
+If you use ng-blur, and then use the handler to check for input class="ng-dirty", that will tell you if the input value has changed.
+But problem is ng-dirty is used for the whole form rather than just a input box. 
+
+AngJS Method:
+---------------
+$scope.onchange = function () {}
+
+html:
+----------
+<input type="text" ng-model="x" ng-change="onchange()" ng-model-options="{updateOn: 'blur'}"/>
+
+Detail URL:
+---------
+http://stackoverflow.com/questions/19456397/angularjs-ngchange-trigger-onblurURL
+
+
+ 2. Update Value of ng-model when focus is lost from text box  not while entering the value 
+==========================================================================================
+Solution above Angularjs Ver. 1.3 Use ng-modal-options
+------------------------------------------------------
+https://docs.angularjs.org/api/ng/type/ngModel.NgModelController
+https://docs.angularjs.org/api/ng/directive/ngBlur
+
+Solution below 1.3 is 
+-------------------------
+http://stackoverflow.com/questions/11868393/angularjs-inputtext-ngchange-fires-while-the-value-is-changing
+http://stackoverflow.com/questions/14722577/how-to-let-ng-model-not-update-immediately
+
+
+
+Create  JSON object in javascript
+=============================
+http://stackoverflow.com/questions/2250953/how-do-i-create-javascript-arrayjson-format-dynamically
+
+
+update CSS of Selected Item
+=========================
+http://stackoverflow.com/questions/17928487/angular-js-how-to-change-an-elements-css-class-on-click-and-to-remove-all-others
+
+$watch vs $watchCollection
+=========================
+http://www.bennadel.com/blog/2566-scope-watch-vs-watchcollection-in-angularjs.htm
+
+http://nathanleclaire.com/blog/2014/01/31/banging-your-head-against-an-angularjs-issue-try-this/
+
+
+Date picker in angular-js
+=========================
+http://stackoverflow.com/questions/20231250/angularui-datepicker-dynamic-date-disabling
+http://plnkr.co/edit/W5pb1boMLOHZFnWkMU8o?p=preview
+http://jsfiddle.net/bateast/Q6py9/1/
+
+Modal- As Service
+=================
+http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service
+http://www.dwmkerr.com/the-only-angularjs-modal-service-youll-ever-need/
+http://www.dwmkerr.com/the-only-angularjs-modal-service-youll-ever-need/
+
+Passing parameter to Modal
+=======================
+http://stackoverflow.com/questions/18576454/angularjs-pass-parameter-to-modal
+
+http://stackoverflow.com/questions/22620420/passing-data-to-twitter-bootstrap-modal-in-angular
+http://plnkr.co/edit/Om8rlM4SjV6U8pCx9iHV?p=preview
+
+Select multiple item from list (not same as options in select)
+====================================================
+http://stackoverflow.com/questions/18797364/select-multiple-list-items-using-angularjs
+http://plnkr.co/edit/kuC3PK?p=preview
+
+Sending datad between parenet and child controller using Emit/ On in angular
+===========================================================================
+http://toddmotto.com/all-about-angulars-emit-broadcast-on-publish-subscribing/
+
+
+Writing Test Cases in AngularJS
+================================
+http://www.ng-newsletter.com/advent2013/#!/day/19
+https://docs.angularjs.org/guide/unit-testing
+http://www.smashingmagazine.com/2014/10/07/introduction-to-unit-testing-in-angularjs/
+http://www.sitepoint.com/unit-and-e2e-testing-in-angularjs/
+http://quickleft.com/blog/angularjs-unit-testing-for-real-though
+
+Jasmine test Case
+======================
+http://code.tutsplus.com/tutorials/testing-your-javascript-with-jasmine--net-21229
+http://stackoverflow.com/questions/27036611/jasmine-test-case-for-restangular-within-a-function
+http://jasmine.github.io/1.3/introduction.html
+http://www.webdesignermag.co.uk/tutorials/how-good-is-your-javscript-test-with-jasmine/
+http://stackoverflow.com/questions/22246813/unit-testing-testing-a-modalinstance-controller-with-karma-jasmine
+
+ test Case Video
+======================
+https://www.youtube.com/watch?v=qK-Z0oEdE4Y&feature=player_embedded
+http://pluralsight.com/training/Courses/TableOfContents/angularjs-fundamentals
+
+Mocking Promise / resource
+==================================
+http://projectpoppycock.com/2014/03/05/mocking-resource-and-promises-in-angularjs-unit-tests/
+http://plnkr.co/edit/RrUa97ulojjDuxYZhU72?p=preview
+
+Modal Mocking in Test case
+==========================
+http://stackoverflow.com/questions/21214868/angularjs-ui-bootstrap-mocking-modal-in-unit-test
+
+TypeError: 'undefined' is not a function (evaluating '$modalInstance().dismiss('cancel')')
+==================================================================================
+http://plnkr.co/edit/tIh5rbvseD7vxfPJHFd6?p=preview
+
+Learning AngularJS
+------------------------
+http://ng-learn.org/2014/01/AngularJS_Workshop_From_Zero_To_Ninja_Jr_Part5/
+
+
+Mocking Modal
+==================
+beforeEach(angular.mock.inject(function($controller, $rootScope, $httpBackend){
+        scope = $rootScope.$new();
+            fakeModal = {
+            result: {
+                then: function (confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            },
+            close: function (item) {
+                //The user clicked OK on the modal dialog, call the stored confirm callback with the selected item
+                //console.log("Close - OK clicked");
+                this.result.confirmCallBack(item);
+            },
+            dismiss: function (type) {
+                //console.log("Dismiss - Cancel clicked");
+                //The user clicked cancel on the modal dialog, call the stored cancel callback
+                this.result.cancelCallback(type);
+            },
+            open: function (options) {
+                //console.log("Open - Open clicked");
+            }
+        };
+		ServiceFactoryMock = {
+                ServiceFactoryFunctionMock: function ServiceFactoryFunctionMock() {
+                    var promise={then:function(){return serviceFactoryMockData }};
+                    serviceFactoryMockData =
+                    {
+                        "jsonData": [
+                            {
+                                "id": "450081159471",
+                                "nameFirst": "ABC",
+                                "nameLast": "XYZ"
+							}
+						]
+						
+								return promise;
+					};
+                    /*return {
+                        success: function (fn) {
+                            fn(serviceFactoryMockData);
+                            deferred = q.defer();
+                            return deferred.promise;
+                        },
+                        error: function (fn) {
+                            fn();
+                        }
+                    };*/
+					}
+				};
+				
+				 controller = $controller('moduleController', {
+            $scope: scope,
+            $modal: fakeModal,
+            modalService: fakeModal,
+            serviceFactory: serviceFactoryMock,
+            serviceFactory: serviceFactoryMock,
+            $httpBackend: httpBackend,
+            MODULE_CONSTANT:MODULE_CONSTANT
+        });
+        }));
+
+ it('Cancel Modal -  cancelFunction() with cancel value', function() {
+        controller.flag = true;
+        //console.log(controller.serviceJSONData.nameFirst);
+        sinon.stub(fakeModal, "open", function(){
+            return  fakeModal;
+        });
+        controller.cancelFunction();
+        fakeModal.open.restore();
+        //console.log("before dismiss");
+        fakeModal.close("continue");
+        //console.log("after dismiss--");
+        expect(controller.flag).to.equal(true);
+
+    });
+it(' Show  If Case - Modal Window', function () {
+        console.log(" Show  If Case - Modal Window");        
+        controller.typeId = "2";
+        controller.index = 1;
+        controller.userDetails("2", 1);
+        sinon.stub(fakeModal, "open", function(){
+            return  fakeModal;
+        });
+        controller.openViewCancelModal("2", 1);
+        //console.log("before dismiss");
+        var test = fakeModal.close('noCancel'); //noCancel - yesContinue
+        //console.log("after dismiss--"+test);
+        expect(controller.disableButton).to.equal(true);
+    });

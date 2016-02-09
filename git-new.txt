@@ -1,0 +1,605 @@
+
+Commands List
+========================
+
+$ vi README
+$ git add README 						/* this will only add the README file to staging area but not commit*/  
+$ git add application/views/scripts/index/index.phtml /* this will only add the file to staging area but not commit*/
+$ git status				/* this will only show files status if they are Staged or not and Ready for commit or not.*/  
+$ git reset HEAD README		/* this will remove  README file from staging area */ 
+$ git diff --cached			/* To see what you’ve staged that will go into your next commit, you can use "git diff -cached." */ 
+$ git diff 					/* To see what you’ve changed but not yet staged, type "git diff" with no other arguments" */ 
+$ git commit
+$ cat .gitignore
+$ vi .gitignore
+$ git commit -m "Fix/New Code added/ Module updated etc: commit and add comment about code committed"
+$ git commit -a -m "file added" /*   by using this command you dont need to add the files individually i.e. skip file staging step*/
+
+Diff commands
+===============
+=>git diff command doesn’t show all changes made since last commit. If you’ve staged all of your changes, git diff will give you no output.
+
+// Execute below commands to view the diff in different commits / release based on there hash tags
+
+git diff
+git difftool
+git diff HEAD
+git difftool  HEAD
+git diff --cached
+git show <minimum first 5 digit of the hash tag of commit / release>
+git log 				/* to view the log of latest commit on the checkout branch */
+
+Compare Files with Git Diff and Diff Tool - p4merge
+=========================================================
+Git already comes with the tool for file comparison. It is text based.
+
+Through Git Command Usage
+-----------------------------
+Run the command without any parameters
+$ git diff 
+/* It displays all the differences in all your modified files from previously committed work. Old lines are prefixed with the - sign and the new lines with the + sign */
+
+$ git diff location\filename 	/* For displaying the difference in just one file you have to add the file relative location and the file name. */
+
+
+Through Visual tool Usage - p4merge
+-----------------------------
+Git provides a command difftool allows you to register comparison tool of your choice and to integrate it with git. example like p4merge. you can add this to your set up.
+$ git config --global diff.tool p4merge   // adding p4merge tool
+$ git config --global difftool.p4merge.cmd 'p4merge.exe $LOCAL $REMOTE' // adding p4merge path
+$ git config --global difftool.prompt false // removing prompt to open p4merge tool
+
+$ git config --list
+$ diff.tool=p4merge
+$ difftool.p4merge.path=C:/Program Files/Perforce/p4merge.exe
+
+# Starts git difftool for all modified files
+$ git difftool
+
+# Compare only specific file
+$ git difftool location\filename
+
+Advance usage
+---------------
+Compare file against specific revision. 
+$ git log filename 
+
+From the output you can copy the commit identifier and run the difftool with the path to the version. Example
+$ git difftool 8d53363981a35c07f2bee7cae71f8e8bd95be625 -- filename
+
+Also compare between two different commits
+------------------------------------------
+$ git difftool [start commit]..[end commit] filename
+$ git difftool 6cde26245763dd43f9505c7578a1f7be44b7fad1..8d53363981a35c07f2bee7cae71f8e8bd95be625 filename 
+
+/* here you can also use first 5 character of commit but not less than this */
+
+Removing Files:
+==================
+$ rm grit.gemspec  /* remove the file from your working directory, it shows up under the "Changed but not updated" (that is, unstaged) area of your git status output */
+
+
+$ git rm grit.gemspec  /* The next time you commit, the file will be gone and no longer tracked. */
+rm ’grit.gemspec’
+
+$ git rm --cached readme.txt /* useful if you forgot to add to your .gitignore file and accidentally added it, like a log file or a bunch of .a compiled files.*/
+
+$ git rm log/\*.log   /* This command removes all files that have the .log extension in the log/ directory */
+
+$ git rm \*˜  /* This command removes all files that end with . */
+
+Remove Files which no longer needed in repo
+===========================================
+$ git rm file1.txt
+$ git commit -m "remove file1.txt"
+
+Undeleting files / recvovering deleted files in Git
+=======================================================
+If the deletion has not been committed, the command below will restore the deleted file in the working tree.
+$ git checkout -- <file>
+
+You can get a list of all the deleted files in the working tree using the command below.
+$ git ls-files --deleted
+
+
+If the deletion has been committed, find the commit where it happened, then recover the file from this commit.
+$ git rev-list -n 1 HEAD -- <file>
+$ git checkout <commit>^ -- <file>
+
+In case you are looking for the path of the file to recover, the following command will display a summary of all deleted files.
+$ git log --diff-filter=D --summary
+
+Moving Files:
+==============
+$ git mv README.txt README  /* This  tells Git to considers it a renamed file*/
+
+Above command is equivalent to running something like this
+$ mv README.txt README
+$ git rm README.txt
+$ git add README
+
+Viewing the Commit History:
+==================================
+$ git log
+
+The helpful options is -p which shows the diff in cmmits and -2 shows the last  commits entries 
+
+$ git log p -2
+$ git log --stat /* to view the details of commit log */
+$ git log --pretty=oneline /* to view the logs in better ways Also the 'short', 'full', and 'fuller' options */
+$ git log --pretty=oneline /* it has format as below for showing logs*/
+
+ca82a6dff817ec66f44342007202690a93763949 changed the verison number
+085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7 removed unnecessary test code
+a11bef06a3f659402fe7563abf99ad00de2209e6 first commit
+
+$ git log --pretty=format:"%h - %an, %ar : %s"   /* Another option is 'format', which allows you to specify your own log output format as below .*/
+ca82a6d - Scott Chacon, 11 months ago : changed the verison number
+
+
+Search through logs to find relevant commit 
+===================================================
+Search the string through all the commit logs
+
+$ git log --grep="search-string" --all
+
+Clip command not wokring in git
+=================================
+$ cat ~/.ssh/id_rsa.pub >/dev/clipboard
+
+
+Option  - Description of Output
+===============================
+
+%H 		Commit hash					%h 		Abbreviated commit hash		%T		Tree hash				%t		Abbreviated tree hash		
+%P		Parent hashes				%p 		Abbreviated parent hashes	%an 	Author name				%ae 	Author e-mail		
+%ad		Author date (format respects the date= option)					%ar 	Author date, relative	%cn 	Committer name				
+%ce		Committer email				%cd Committer date					%cr Committer date, relative	%s Subject
+
+$ git log --pretty=format:"%h %s" --graph /* shows the graph of commit details */
+
+Limiting Log Out
+=================
+Option 				Description
+-p 					Show the patch introduced with each commit.						
+--stat 				Show statistics for files modified in each commit.
+--shortstat 		Display only the changed/insertions/deletions line from the	–stat command.
+--name-only 		Show the list of files modified after the commit information.
+--name-status 		Show the list of files affected with added/modified/deleted	information as well.
+--abbrev-commit 	Show only the first few characters of the SHA-1 checksum	instead of all 40.
+--relative-date 	Display the date in a relative format (for example, "2 weeks ago") instead of using the full date format.
+--graph 			Display an ASCII graph of the branch and merge history	beside the log output.
+--pretty 			Show commits in an alternate format. Options include oneline,short, full, fuller, and format (where specify your own format).
+
+$ git log --since=2.weeks
+
+Option 				Description
+-(n) 				Show only the last n commits
+--since, --after 	Limit the commits to those made after the specified date.
+--until, --before 	Limit the commits to those made before the specified date.
+--author 			Only show commits in which the author entry matches the specified string.
+--committer 		Only show commits in which the committer entry matches	the specified string.
+
+If you want to see which commits modifying test files in the Git source	code history were committed by Junio Hamano and were not merges in the month of	October 2008,
+
+$ git log --pretty="%h:%s" --author=gitster --since="2008-10-01" \ --before="2008-11-01" --no-merges -- t/
+
+To use a graphical tool to visualize your commit history, Use 'gitk' command. It is visual tools having all the options as 'log' command
+
+Undoing Things
+================
+1. Changing Your Last Commit
+-----------------------------
+$ git commit --amend
+
+If you commit and then realize you forgot to stage the changes in a file you wanted to add to this commit, you can do something like this:
+
+$ git commit -m 'initial commit'
+$ git add forgotten_file
+$ git commit --amend
+
+2. Unstaging a Staged File
+----------------------------------
+You’ve changed two files and want to commit them as two separate changes, but you accidentally type git add * and stage them both.
+$ git reset HEAD xyz.txt
+
+3. Unmodifying a Modified File
+---------------------------------------
+if you realize that you don’t want to keep your changes to the xyz.txt file. 'git status' command tells you how to do that for version 1.6 higher,
+# (use "git checkout -- <file>..." to discard changes in working directory)
+$ git checkout -- benchmarks.rb
+
+Working with Remotes
+============================
+1. Showing Your Remote
+------------------------
+$ git clone git://github.com/schacon/ticgit.git
+$ git remote -v /* option-  v, Shows you the URL that Git has stored for the short name to be expanded to */
+
+2. Adding Remote Repositories
+--------------------------------
+$ git remote
+origin
+$ git remote add zangujas git://github.com/vivekgit5/zangujas
+$ git remote -v
+
+3. Fetching and Pulling from Your Remotes
+-------------------------------------------
+$ git fetch zangujas /*The command goes to remote project and pulls down all data from remote project that you don’t have yet.*/ 
+$ git fetch origin  /* This command fetches any new work that has been pushed to that server since you cloned (or last fetched from) it. It’s   
+ important to note that the fetch command pulls the data to your local repository — it doesn’t automatically merge it with any of your work or
+ modify what you’re currently working on. You have to merge it manually into your work when you’re ready.*/
+  If you have a branch set up to track a remote branch, you can use the 'git pull' command to automatically fetch and then merge a remote branch into
+ your current branch.
+ 
+ 
+4. Pushing to Your Remotes 
+------------------------------
+$ git push [remote-name] [branch-name]
+ 
+$ git push origin master  /* This command works only if you cloned from a server to which you have write access and if nobody has pushed in the
+ meantime. If you and someone else clone at the same time and they push upstream and then you push upstream, your push will  rightly be rejected.
+ You’ll have to pull down their work first and incorporate it into yours before you’ll be allowed to push.*/
+ 
+ 5. Inspecting a Remote
+ ----------------------------
+$ git remote show [remote-name]
+$ git remote show origin
+ 
+6. Removing and Renaming Remotes 
+---------------------------------
+$ git remote rename pb paul
+$ git remote
+$ git remote rm paul /* this will remove the paul Remote */
+
+7.  Tagging
+==========================
+	Listing Your Tags
+	-----------------------
+	$ git tag
+	
+	$ git tag -l ’v1.4.2.*’ /* Searc for tag with a particular pattern.*/
+	
+	Creating Tags : lightweight and annotated.
+	----------------------------------------------
+	Lightweight : A lightweight tag is very much like a branch that doesn’t change — it’s just a pointer to a specific commit.
+	Annotated Tag: These are stored as full objects in the Git database. They’re checksummed; contain the tagger name, e-mail, and date; have a 
+	tagging message; and can be signed and verified with GNU Privacy Guard (GPG).
+	
+	Annotated Tags:
+	------------
+	$ git tag -a v1.4 -m ’my version 1.4’ /* The -m specifies a tagging message */
+	$ git tag
+	$ git show v1.4	/* show option show the detail abut tag */
+	
+	Signed Tags :
+	---------------
+	$ git tag -s v1.5 -m ’my signed version 1.4’ /* The -s specifies a signed tag. You need a pass phrase*/
+	
+	Lightweight Tags
+	--------------------
+	$ git tag v1.4-lw   /* To create a lightweight tag, don’t supply the -a, -s, or -m option */
+	
+	Verifying Tags
+	-----------------
+	$ git tag -v v1.4.2.1  /* This command uses GPG to verify signature. You need signer’s public key in your keyring for this to work properly:*/
+	
+	Tagging Later : You can also tag commits after you’ve moved past them.
+	----------------------
+	$ git log --pretty=oneline
+	
+	Suppose you forgot to tag the project at v1.2, which was at the "updated rakefile" commit. You can add it after the fact. To tag that commit,
+	you specify the commit checksum (or part of it) at the end of the command:
+	
+	$ git tag -a v1.2 <checsum-value-of-commit>
+	$ git tag /* You can see that you’ve tagged the commit:*/ 
+	
+	Sharing Tags :
+	----------------
+	By default, the git push command doesn’t transfer tags to remote servers. You will have to explicitly push tags to a shared server after you
+	have created them. This process is just like sharing remote branches you can run git push origin [tagname].
+	$ git push origin v1.5
+	$ git push origin --tags /* Add option --tags to transfer all of your tags to the remote server that are not already there.*/
+	
+8. Tips and Tricks
+========================
+	
+	Auto-Completion
+	-----------------
+	Download the Git source code, and look in the contrib/completion directory; there should be a file called git-completion.bash. Copy this file
+	to your home directory, and add this to your .bashrc file:  source ~/.git-completion.bash
+	$ git co<tab><tab>
+	commit config
+	
+	$ git log --s<tab> /* also works with options*/
+	--shortstat --since= --src-prefix= --stat --summary
+	
+	Git Aliases
+	---------------
+	If you don’t want to type  the entire text of each of the Git commands, you can easily set up an alias for each command using git config.
+	For example:
+	$ git config --global alias.co checkout /* now use --> git co to checout */ 
+	$ git config --global alias.br branch	/* now use --> git br to branch */ 
+	$ git config --global alias.ci commit	/* now use --> git ci to commit*/ 
+	$ git config --global alias.st status	/* now use --> git st to check status*/ 
+	
+	$ git config --global alias.unstage 'reset HEAD --' 
+	/* Above alias makes the following two commands equivalent: 
+	$ git unstage fileA  is ame as below
+	$ git reset HEAD fileA 
+	*/
+	
+	$ git config --global alias.last 'log -1 HEAD'  /* to view last commit log */
+	$ git last /* use this in place of above command */
+	
+	Maybe you want to run an external command. In that case, you start the command with a ! character. This is helpful to write your own tool
+	$ git config --global alias.visual "!gitk"
+	
+	All the basic local Git operations — creating or cloning a repository, making changes, staging and committing those changes, and viewing the history of all the changes the repository has been through. Branching facility in other file.
+
+	Alias for graph of Commits
+	-----------------------------
+	$ git config --global alias.lg1 "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+
+	$git lg1 /* this will show the commit graph */
+
+Try below in sequence to get the remote branch on your local repository  set-up
+===============================================================================
+1. git show-ref 
+
+2. If you see the release-4.2 in listed branch than run below command
+	git checkout -t -b release-4.2 origin/release-4.2
+	git checkout -t -b branch-name origin/branch-name 
+	OR 
+	git checkout -t origin/branch-name
+
+3. If  you don't see the required release tag than you need to synch the upstream and forked branch as below.
+-- NOTE: Before running git fetch command , please run the git pull command for all the existing branches / repos. 
+-- It will remove the chances of conflict of code.
+
+ git fetch upstream
+-- this will synch the upstream with the new branches..
+
+Try below commands to Revert to prevoius commit
+==============================================
+Ref URL:  http://christoph.ruegg.name/blog/git-howto-revert-a-commit-already-pushed-to-a-remote-reposit.html
+Ref URL2: https://www.atlassian.com/git/tutorials/undoing-changes/git-revert
+
+Git Howto: Revert a Commit Already Pushed to a Remote Repository
+------------------------------------------------------------------------
+So you’ve just pushed your local branch to a remote branch, but then realized that one of the commits should not be there, or that there was some unacceptable typo in it. No problem, you can fix it. But you should do it rather fast before anyone fetches the bad commits, or you won’t be very popular with them for a while ;)
+
+First two alternatives that will keep the history intact:
+
+Alternative: Correct the mistake in a new commit
+-------------------------------------------------
+Simply remove or fix the bad file in a new commit and push it to the remote repository. This is the most natural way to fix an error, always safe and totally non-destructive, and how you should do it 99% of the time. The bad commit remains there and accessible, but this is usually not a big deal, unless the file contains sensitive information.
+
+Alternative: Revert the full commit
+------------------------------------
+Sometimes you may want to undo a whole commit with all changes. Instead of going through all the changes manually, you can simply tell git to revert a commit, which does not even have to be the last one. Reverting a commit means to create a new commit that undoes all changes that were made in the bad commit. Just like above, the bad commit remains there, but it no longer affects the the current master and any future commits on top of it.
+
+
+$ git revert dd61ab32
+
+
+###############################################
+Git Ignore
+===============
+
+If you already have a file checked in, and you want to ignore it, Git will not ignore the file if you add a rule later. In those cases, you must untrack the file first, by running the following command in your terminal:
+$ git rm --cached <filename>
+
+Ignoring versioned files
+-------------------------------
+Some files in a repository change often but are rarely committed. Usually, these are various local configuration files that are edited, but should never be committed upstream. Git lets you ignore those files by assuming they are unchanged.
+1. In Terminal, navigate to the location of your Git repository.
+2. Run the following command in your terminal:
+   $ git update-index --assume-unchanged path/to/file.txt
+
+Once you mark a file like this, Git completely ignores any changes on it. It will never show up when running git status or git diff, nor will it ever be committed.   
+
+To make Git track the file again, simply run:   
+  $ git update-index --no-assume-unchanged path/to/file.txt
+
+
+Another method for Git ignore:
+===============================
+Add the following lines to the [alias] section of your .gitconfig file
+
+ignore = update-index --assume-unchanged
+unignore = update-index --no-assume-unchanged
+ignored = !git ls-files -v | grep "^[[:lower:]]"
+
+Now you can use git ignore my_file to ignore changes to the local file, and git unignore my_file to stop ignoring the changes. git ignored lists the ignored files.
+
+
+
+Git Ignore use full links
+===========================
+ 
+https://help.github.com/articles/ignoring-files
+https://gist.github.com/octocat/9257657
+https://devcenter.heroku.com/articles/gitignore
+http://git-scm.com/docs/gitignore
+http://stackoverflow.com/questions/1139762/gitignore-file-not-ignoring
+
+
+
+
+############################################################################################################
+ Cloning the Git Repository in your local machine and Checkout 
+ ========================================================================
+1. Go to Git Hub Repository page
+2. Fork the branch: 
+	1. Click on Top - Right Fork button. It will open the dialogue box to select the user to fork with. 
+	2. It will fork the branch in selected user name
+	3. Select the Branch  / Tags of the related version to clone.
+	3. Click on "Clone URL" button below "Settings" Bottom-Right location to copy the link for cloning the Repository
+	4. 	Go to Git bash command prompt
+		Create the folder at required destination where you want to clone the repository using --  mkdir "folder-name"
+	5. Execute the below command at git command prompt to clone the repository
+		git clone "COPIED CLONE URL" "branch-name"
+		This will clone the required repository at location where you created the folder
+	6. Run "ls -ltr" command to view the repository is cloned properly
+	7. run the "git status" command
+##################################################################
+Command used in training
+==========================
+pwd
+git version
+git help
+git help config
+git config --global --list
+pwd
+cd projects/
+ls
+mkdir demo
+cd demo
+pwd
+git clone git@github.com:vivekgit5/basics-demo.git
+ls
+cd basics-demo/
+git remote -vls
+git branch
+git branch -a
+git checkout develop
+git status
+git branch
+notepad++ test.txt
+ls
+git status
+git add test.txt
+git status
+git commit -m "Adding new test file on develop this time"
+git pull origin develop
+git push origin develop
+git branch
+git branch -a
+ls
+git status
+ls -a
+mate app.log
+ls
+git status
+mate .gitignore
+git status
+git add .gitignore
+git status
+git commit -m "Updating ingore file to exclude log files"
+ls
+git pull origin develop
+git push origin master
+git push origin develop
+git status 
+
+Part Two
+=========================
+Git Bash / Terminal Commands?
+=================================
+ls
+notepad++ test-updated.txt
+git status
+git add .git status
+git commit -m "Adding new test updated file"
+git status
+notepad++ test-updated.txt
+git status
+git add test-updated.txt
+git status
+notepad++ test-updated.txt
+git status
+git diff
+git difftool
+git diff HEAD
+git difftool HEAD
+git status
+git reset HEAD test-updated.txt
+git status
+git status
+notepad++ test-updated.txt
+git checkout -- test-updated.txt
+git status
+notepad++ test-updated.txt
+ls
+git mv test-updated.txt test-updated-rename.txt
+ls
+git status
+git commit -m "Renaming test updated file"
+git status
+ls
+git rm test-updated-rename.txt
+ls
+git status
+git commit -m "Removing test  file"
+ls
+git status
+git log
+git log --oneline --graph --decorate
+git config --global alias.lol 'log --oneline --graph --decorate'
+git lol
+git branch
+ls
+git checkout -b "test/test-more"
+git branch
+ls
+notepad++ test.txt
+git status
+git commit -am "Adding more details to test file "
+git checkout develop
+git branch
+git branch
+git merge "test/test-more"
+git lol
+git checkout -b "test/test-more"
+git branch
+notepad++ test.txt
+git status
+git commit -am "Adding even more data added -- "
+git checkout develop
+notepad++ test.txt
+git status
+git commit -am "Causing trouble, just cause"
+git status
+git branch
+git merge "test/test-more"
+git mergetool
+git commit -m "Resolving conflict with P4Merge"
+git status
+git lol
+git branch
+git branch -d "test/test-more"
+git branch
+git branch -d "test/even-more-test"
+git lol
+git status
+git branch
+git checkout -b "test/vivek-test"
+git branch
+notepad++ test.txt
+git status
+git commit -am "updated test file"
+mate jason-abe-quotes.txt
+ls
+notepad++ test-updated.txt
+ls
+git status
+git add .git status
+git commit
+git status
+git remote
+git remot -v
+git remote -v
+git push -u origin "test/vivek-test"
+git checkout develop
+ls
+git remote
+git remote add upstream git@github.com:training/basics-demo.git
+git remote
+git remote -v
+git pull upstream develop
+ls
+git pull origin develop
+git push origin develop
+git config --global push.default simple
+git push 

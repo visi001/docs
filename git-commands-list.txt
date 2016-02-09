@@ -1,0 +1,22 @@
+New Learnings From Jan 2015
+==============================
+
+Merge the code
+=====================
+Go to Target Branch in which you want to merge the code.
+$ git checkout master
+
+Now write the merge command and name of repository to merge in Target branch
+$ git merge hotfix
+
+Now check the status, you will find new files added and list of file modified
+$git status
+
+Now commit the changes
+$git commit -m "commit message  like merge hotfix in the target Master Branch"
+
+Push the commit to your orked repo
+$git push -v origin rel-X.X
+
+Go to browser, make a Pull and Merge request from the forked branch to master branch
+========================================================================================== 

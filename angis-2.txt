@@ -1,0 +1,242 @@
+Grunt Analyze for CSS JS
+--------------------------
+package.json - "grunt-jscs": "0.8.1",
+
+install npm jscs
+-------------------
+npm install jscs -g
+bower install
+
+runing jscs
+--------------
+jscs path/to/target/depkoyment/folder
+
+nsPopOver message tool tip
+---------------------------
+bower.json - "nsPopover ": "0.5.8"
+
+
+
+
+AngularJS Animate
+-----------------
+https://docs.angularjs.org/api/ngAnimate/service/$animate
+http://onehungrymind.com/ng-animate-first-look-with-angularjs-wizard/
+http://stackoverflow.com/questions/16677304/slide-up-down-effect-with-ng-show-and-ng-animate#comment23998358_16677304
+https://github.com/EricWVGG/AngularSlideables
+http://www.yearofmoo.com/2013/04/animation-in-angularjs.html
+
+
+Modal test case
+=======================
+    describe('Detail Controller Test Case', function () {
+  var controller, scope, httpBackend, mockModal;
+  var detailFactoryMock;
+  
+ beforeEach(angular.mock.module('mainModule.detailModule'));
+  
+  beforeEach(angular.mock.inject(function ($controller, $rootScope, $httpBackend) {
+        scope = $rootScope.$new();
+        mockModal = {
+            result: {
+                then: function (confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            },
+            close: function (item) {
+                //The user clicked OK on the modal dialog, call the stored confirm callback with the selected item
+                return function (){this.result.confirmCallBack(item);}
+            },
+            dismiss: function (type) {
+                //The user clicked cancel on the modal dialog, call the stored cancel callback
+                this.result.cancelCallback(type);
+            },
+            open: function (options) {
+                return mockModal;
+                //console.log("open");
+            }
+        };
+		
+		 detailFactoryMock = {
+            getIdDetails: function getIdDetails() {
+                var getIdMockData =
+                {
+                    "id": [
+                        {
+						"id": 131
+						}
+						 ]
+                };
+                return {
+                    success: function (fn) {
+                        fn(getIdMockData);
+                    },
+                    error: function (fn) {
+                         fn({errMsg:"Error getIdDetails()"});
+                    }
+                }
+            }
+			 };
+		
+		 controller = $controller('detailController', {
+            $scope: scope,
+            $modal: mockModal,
+            modalService: mockModal,
+            detailFactory: detailFactoryMock,
+            $httpBackend: httpBackend
+        });
+		
+		
+ }));
+  it(' Details - If Case - Modal Window', function () {
+        console.log("Details - If Case - Modal Window");
+		
+		controller.id = "1";
+		controller.index = 0;
+		controller.disbaleFlag = true;
+		controller.SaveButton = true;
+		controller.getDetails("2", 1);
+
+        mockModal.open();
+
+		var test = mockModal.close('yes'); //no - yes
+		//console.log("after dismiss--"+test);
+		expect(controller.disbaleFlag).to.equal(true);
+		expect(controller.id).to.equal(null);
+		expect(controller.index).to.equal(null);
+		
+		fakeModal.open();
+
+        //controller.openViewCancelModal("2", 1);
+        console.log("before dismiss");
+        var test = fakeModal.close('yesContinue'); //noCancel - yesContinue
+        //console.log("after dismiss--"+test);
+        expect(controller.selectedSpecialRequestTypeId).to.equal(null);
+        expect(controller.selectedSpecialRequestIndex).to.equal(null);
+		
+		
+    });
+  
+  it(' Details - Else Case - Modal Window', function () {
+		console.log("Details - Else Case - Modal Window");
+		// set mock values in controller
+		controller.id = "2";
+		controller.index = 1;
+		controller.disbaleFlag = false;		 
+        controller.SaveButton = true;
+		controller.getDetails("1", 0);
+
+		mockModal.open();
+
+		var test = mockModal.close('yes'); //no - yes
+		//console.log("after dismiss--"+test);
+		expect(controller.disbaleFlag).to.equal(true);
+		expect(controller.id).to.equal(null);
+		expect(controller.index).to.equal(null);
+		
+		
+ });
+ 
+ it('Emit  - onUpdateCancel()', function () {
+        console.log("Emit  - onUpdateCancel()");
+
+        controller.onUpdateCancel();
+
+        var eventEmitted = false;
+        scope.$on('updateDetailsNo', function () {
+            eventEmitted = true;
+        });
+
+        scope.$emit('updateDetailsNo');
+        scope.$apply();
+        eventEmitted.should.be.true;
+
+    });
+ 
+  });
+==================================================================================================================
+Tool Tip implementaion in angularJS
+-------------------------------------
+controller
+----------------------
+		$scope.flag = {};
+        $scope.tooltip = {};
+        user.constUserNameMaxLen=8;   
+
+function requiredLengthValidation(type,field,fieldValue) {
+
+		var result = '';
+		if (field === 'userName') {
+			result = (fieldValue.length > user.constUserNameMaxLen)? "1":"0";
+			if (result === '1') {
+				$scope.flag.userName = false;
+				$scope.tooltip.userName = "Length should not be more than 8 chars";
+			}
+			else {
+				$scope.flag.userName = true;
+				$scope.tooltip.userName = '';
+			}
+		}
+}
+
+UI - html page
+---------------
+
+ <div>
+	<label for="UserName">User Name</label>
+	<input type="text" name="UserName" id="UserName"
+		   ng-model="user.userName"
+		   title="User Name"
+		   tooltip="{{tooltip.userName}}"
+		   tooltip-trigger="{{{true: 'mouseenter', false: 'never'}[flag.userName === false]}}"
+		   ng-class="{'hasError':flag.userName===false}"
+		   ng-required="true"
+		   ng-blur="user.requiredLengthValidation('requiredLength','userName',user.userName);"
+		   value="{{user.userName}}" ng-change="user.enableSaveButton();">
+</div>
+
+css class
+------------------
+.hasError{
+    border-color: #B94A48;
+    color: #B94A48;
+    background: url(../app/image/error.png) no-repeat right;
+    background-color: white;
+}
+=============================================================================================================
+
+sorting implementation in AngularJs
+===============================================================
+ Controller
+============
+   function sortDataParam(column) {
+            if (ticketInfo.orderProperty === column) {
+                ticketInfo.direction = !ticketInfo.direction;
+            } else {
+                ticketInfo.orderProperty = column;
+                ticketInfo.direction = false;
+            }
+        }
+
+HTML
+======
+<tr>
+<th >Date / Time<a href=""><img src="sort.jpg" ng-click="ticketInfo.sortDataParam('date');"></a></th>
+<th >Comment<a href=""> <img src="sort.jpg" ng-click="ticketInfo.sortDataParam('commentText');" ></a></th>
+<th >Created By<a href=""><img src="sort.jpg" ng-click="ticketInfo.sortDataParam('createdBy');" ></a></th>
+<th >Type <a href=""> <img src="sort.jpg" ng-click="ticketInfo.sortDataParam('commentTypeName');"></a></th>
+<th >&nbsp; </th>
+</tr>		
+		
+		
+<tr ng-repeat="commentData in ticketInfo.commentData | orderBy:ticketInfo.orderProperty:ticketInfo.direction">
+	<td width="221px"> {{commentData.scanDateTime | date:'M/d/yyyy HH:mm a'}}</td>
+	<td width="70.9%">{{commentData.scanLocation}}</td>
+	<td width="200px">{{commentData.scanUserId}}</td>
+</tr>
+
+
+
+

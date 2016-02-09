@@ -1,0 +1,3 @@
+Fire a PHP script on start of Apache Server
+==========================================
+http://stackoverflow.com/questions/2992938/is-it-possible-to-launch-a-php-script-at-apache-startup

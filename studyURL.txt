@@ -1,0 +1,22 @@
+
+	http://economictimes.indiatimes.com/wealth/healthinsurancerating
+	http://blog.diniscruz.com/2014/02/using-angularjs-in-eclipse-part-1.html
+	
+	Study materials Bootstrap grid layout 
+	Some good online study materials for bootstrap grid layout 
+	http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system.php
+	http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-examples.php
+	http://www.w3schools.com/bootstrap/bootstrap_grid_basic.asp
+	https://scotch.io/tutorials/understanding-the-bootstrap-3-grid-system
+	http://getbootstrap.com/css/#grid
+	http://cssguidelin.es/ - CSS guidelines
+	
+	http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-system.php
+	http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-grid-examples.php
+	http://www.w3schools.com/bootstrap/bootstrap_grid_basic.asp
+	https://scotch.io/tutorials/understanding-the-bootstrap-3-grid-system
+	http://getbootstrap.com/css/#grid
+	
+	http://www.ng-newsletter.com/posts/beginner2expert-services.html
+	https://github.com/auser/ng-newsletter-beginner-series/blob/part6/js/beginner.js
+	http://weblogs.asp.net/dwahlin/using-an-angularjs-factory-to-interact-with-a-restful-service

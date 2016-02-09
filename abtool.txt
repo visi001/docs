@@ -1,0 +1,31 @@
+ab TOOL
+•	   Apache Bench (ab) is a tool for benchmarking performance of  Apache Hypertext Transfer Protocol (HTTP) server.
+•	   Its a free, open source performance testing solution that comes with Apache server.
+Use
+•	It especially shows - how many requests per second your Apache installation is capable of serving.
+•	It is used to judge overall performance of the server.
+When to USE
+•	When attempting to create a large change in Drupal core.
+•	To provide benchmark results to ensure that  any change made doesn't negatively impact performance.
+    Before applying any patch
+•	ab -c1 -n500 http://www.myurl.com
+ -c command specifies the number of concurrent requests 
+  -n specifies the total number of page requests
+  
+Important things to note
+    à   Request per second: 
+•	 Number of request that are being served per second.
+•	 Value should be as high as possible.
+         
+    à  Table for Connection time :
+•	 The second (mean) and third ([+/-sd]) column of the last row (Total). 
+•	 The mean or average tells us how long a page request took on average (in milliseconds). 
+•	The standard deviation is a means to judge how accurate a particular test result is.
+•	If the standard deviation is large, then this is an indicator that something wasn't working as it should, for example, the web server was under high load or there was a network lag.
+NOTE :
+-> Request per seconds should be high.
+-> Deviation should be less
+
+Reference:
+http://drupal.org/node/79237
+http:httpd.apache.org/docs/trunk/programs/ab.html

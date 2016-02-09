@@ -1,0 +1,6 @@
+http://stackoverflow.com/questions/16625972/change-color-of-bootstrap-navbar-on-hover-link
+http://www.w3resource.com/html-css-exercise/navigation.php
+http://getbootstrap.com/components/#navbar
+http://www.w3resource.com/twitter-bootstrap/tutorial.php
+http://www.w3resource.com/twitter-bootstrap/navbar-tutorial.php
+http://www.w3resource.com/twitter-bootstrap/navbar-example.html
